@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _COMPAT_H
+#define _COMPAT_H
+
 #include <cstdio>
 #include <string>
 #include <filesystem>
@@ -94,5 +96,5 @@ inline void unloadCustomFonts() {
 
     FindClose(hFind);
 }
-
-#endif
+#endif // WIN32, CYGWIN
+#endif // _COMPAT_H

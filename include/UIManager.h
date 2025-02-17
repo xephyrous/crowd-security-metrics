@@ -1,10 +1,12 @@
-#pragma once
+#ifndef _UI_MANAGER_H
+#define _UI_MANAGER_H
 
 #include <string>
 #include <unordered_map>
 
 #include "FL/Fl.H"
 #include "FL/Fl_Window.H"
+#include "Views/View.h"
 
 namespace UI {
 	typedef struct {
@@ -17,8 +19,7 @@ namespace UI {
 
 	enum Views {
 		Interface,
-		Sources,
-		Count // Sentinel value for counting views
+		Sources
 	};
 
 	class Manager {
@@ -38,13 +39,12 @@ namespace UI {
 
 	private:
 		static inline Fl_Window* m_window = nullptr;
-		static inline Fl_Group* m_views[Views::Count];
-		static inline Views m_currentView = Views::Interface;
-
-		static void initInterfaceView();
-		static void initSourcesView();
+        static inline Views m_currentView = Views::Interface;
+        static inline std::unordered_map<Views, View*> m_views;
 
 		void openFileDialog(Fl_Widget* w, void* data);
 	};
 
 }
+
+#endif // _UI_MANAGER_H
