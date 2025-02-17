@@ -9,19 +9,20 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# opencv
+find_package(OpenCV REQUIRED)
+
 # fltk
 add_subdirectory(fltk)
 include_directories(${CMAKE_SOURCE_DIR}/fltk)
 
 # Collect source files
-include_directories(${CMAKE_SOURCE_DIR}/include)
-
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/src/*.cpp)
-
 add_executable(CrowdSecurityMetrics ${SRC_FILES})
 
-# Linking
-target_link_libraries(CrowdSecurityMetrics fltk "${TORCH_LIBRARIES}")
+# Include directories & Linking
+target_include_directories(CrowdSecurityMetrics PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/include)
+target_link_libraries(CrowdSecurityMetrics fltk ${TORCH_LIBRARIES} ${OpenCV_LIBS})
 
 # The following code block is suggested to be used on Windows.
 # According to https://github.com/pytorch/pytorch/issues/25457,
