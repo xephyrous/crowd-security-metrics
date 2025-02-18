@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
 project(CrowdSecurityMetrics)
 
+# boost
+set(Boost_ROOT "C:/boost")
+set(Boost_INCLUDE_DIR "C:/boost")
+find_package(Boost REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+
 # libtorch
 list(APPEND CMAKE_PREFIX_PATH "C:\\libtorch")
 find_package(Torch REQUIRED)
@@ -16,13 +22,26 @@ find_package(OpenCV REQUIRED)
 add_subdirectory(fltk)
 include_directories(${CMAKE_SOURCE_DIR}/fltk)
 
-# Collect source files
+# FrameServer build
+set(FRAMESERVER_DIR ${CMAKE_SOURCE_DIR}/FrameServer)
+set(FRAMESERVER_INCLUDE_DIR ${FRAMESERVER_DIR}/include)
+set(FRAMESERVER_SRC_DIR ${FRAMESERVER_DIR}/src)
+
+# Collect CrowdSecurityMetrics source files
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/src/*.cpp)
 add_executable(CrowdSecurityMetrics ${SRC_FILES})
 
-# Include directories & Linking
-target_include_directories(CrowdSecurityMetrics PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/include)
-target_link_libraries(CrowdSecurityMetrics fltk ${TORCH_LIBRARIES} ${OpenCV_LIBS})
+# Collect FrameServer source files
+file(GLOB_RECURSE FRAMESERVER_SRC_FILES CONFIGURE_DEPENDS ${FRAMESERVER_SRC_DIR}/*.cpp)
+add_executable(FrameServer ${FRAMESERVER_SRC_FILES})
+
+# Include directories
+target_include_directories(CrowdSecurityMetrics PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/include ${Boost_INCLUDE_DIR})
+target_include_directories(FrameServer PRIVATE ${FRAMESERVER_INCLUDE_DIR} ${OpenCV_INCLUDE_DIRS})
+
+# Linking
+target_link_libraries(CrowdSecurityMetrics fltk ${TORCH_LIBRARIES} ${OpenCV_LIBS} ${Boost_LIBRARIES})
+target_link_libraries(FrameServer fltk ${OpenCV_LIBS} ${Boost_LIBRARIES})
 
 # The following code block is suggested to be used on Windows.
 # According to https://github.com/pytorch/pytorch/issues/25457,
