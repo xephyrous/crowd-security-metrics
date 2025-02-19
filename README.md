@@ -22,3 +22,23 @@ This project was built with Visual Studio 2022, it is heavily suggested that it 
 	- Once a build folder is generated, copy all `.dll` files from `C:\libtorch\lib` to `PROJECT_DIRECTORY/bin/Debug`
 - [Boost](https://www.boost.org/users/download/)
 	- Install to `C:\boost`
+
+**Model Location**  
+- Create  a new folder `CrowdSecurityMetrics\model`
+- Download the model `mask_rcnn.pt` file and place it in the model folder
+
+## File Structure
+
+- CrowdSecurityMetrics
+  - Assets
+  - fltk
+  - include
+    - Views
+    - .h files
+  - model
+    - mask\_rcnn.pt 
+  - src
+    - Views
+    - .cpp files
+  - CMakeLists.txt
+  - run.bat
