@@ -97,4 +97,11 @@ inline void unloadCustomFonts() {
     FindClose(hFind);
 }
 #endif // WIN32, CYGWIN
+
+#define __unix__
+#if defined(__unix__)
+
+// TODO : UNIX stuff
+
+#endif // unix
 #endif // _COMPAT_H

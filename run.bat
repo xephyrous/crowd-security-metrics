@@ -1,12 +1,24 @@
 @echo off
 setlocal enabledelayedexpansion
 
-:: Set build directory and executable name
+:: Command line args
+set BUILD_TYPE=%1
+set TARGET_TYPE=%2
+
+:: Default values
+if "%BUILD_TYPE%"=="" set BUILD_TYPE=debug
+if "%TARGET_TYPE%"=="" set TARGET_TYPE=main
+
+if "%BUILD_TYPE%"=="debug" (
+    set OUTPUT_DIR=%BUILD_DIR%\Debug
+) else if "%BUILD_TYPE%"=="release" (
+    set OUTPUT_DIR=%BUILD_DIR%\Release
+)
+
+:: Set build directory
 set BUILD_DIR=build
-set DEBUG_DIR=%BUILD_DIR%\Debug
-set EXE_NAME=CrowdSecurityMetrics.exe
 set ASSETS_SRC=%CD%\Assets
-set ASSETS_DEST=%CD%\%DEBUG_DIR%\Assets
+set ASSETS_DEST=%CD%\%OUTPUT_DIR%\Assets
 
 :: Check if build directory exists
 if not exist %BUILD_DIR% (
@@ -17,11 +29,11 @@ if not exist %BUILD_DIR% (
     cmake --build . --config Debug
 
     :: Ensure Debug directory exists before copying assets
-    if not exist %DEBUG_DIR% mkdir %DEBUG_DIR%
     xcopy /E /I /Y "%ASSETS_SRC%" "%ASSETS_DEST%"
 
     cd Debug
-    start %EXE_NAME%
+    start CrowdSecurityMetrics.exe
+    start FrameServer.exe
     exit /b
 )
 
@@ -38,11 +50,12 @@ if "%CMAKE_TIME%" GTR "%BUILD_TIME%" (
     cmake --build . --config Debug
 
     :: Ensure Debug directory exists before copying assets
-    if not exist %DEBUG_DIR% mkdir %DEBUG_DIR%
+    if not exist %OUTPUT_DIR% mkdir %OUTPUT_DIR%
     xcopy /E /I /Y "%ASSETS_SRC%" "%ASSETS_DEST%"
 
     cd Debug
-    start %EXE_NAME%
+    start CrowdSecurityMetrics.exe
+    start FrameServer.exe
     exit /b
 )
 
@@ -58,4 +71,5 @@ if not exist "%ASSETS_DEST%" (
 )
 
 cd Debug
-start %EXE_NAME%
+start CrowdSecurityMetrics.exe
+start FrameServer.exe
